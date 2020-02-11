@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <title>Users</title>
+</head>
+<body>
+<h1 th:text="#{label.users}"></h1>
+<table>
+    <tbody>
+    <tr th:each="item : ${usersPage.content}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.email}"></td>
+        <td th:text="${item.role}"></td>
+    </tr>
+    </tbody>
+</table>
+<div th:if="${usersPage.totalPages > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/users(size=${usersPage.size}, page=${pageNumber})}"
+       th:text=${pageNumber}
+       th:class="${pageNumber == bookPage.number + 1} ? active"></a>
+</div>
+</body>
+</html>

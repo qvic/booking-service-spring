@@ -2,7 +2,9 @@ package com.epam.bookingservice.mapper;
 
 import com.epam.bookingservice.domain.Service;
 import com.epam.bookingservice.entity.ServiceEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ServiceMapper implements Mapper<ServiceEntity, Service> {
 
     @Override
@@ -12,10 +14,10 @@ public class ServiceMapper implements Mapper<ServiceEntity, Service> {
         }
 
         return ServiceEntity.builder()
-                .setId(domain.getId())
-                .setName(domain.getName())
-                .setDurationInTimeslots(domain.getDurationInTimeslots())
-                .setPrice(domain.getPrice())
+                .id(domain.getId())
+                .name(domain.getName())
+                .durationInTimeslots(domain.getDurationInTimeslots())
+                .price(domain.getPrice())
                 .build();
     }
 
@@ -26,10 +28,10 @@ public class ServiceMapper implements Mapper<ServiceEntity, Service> {
         }
 
         return Service.builder()
-                .setId(entity.getId())
-                .setName(entity.getName())
-                .setDurationInTimeslots(entity.getDurationInTimeslots())
-                .setPrice(entity.getPrice())
+                .id(entity.getId())
+                .name(entity.getName())
+                .durationInTimeslots(entity.getDurationInTimeslots())
+                .price(entity.getPrice())
                 .build();
     }
 }

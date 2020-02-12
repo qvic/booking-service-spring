@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nav</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:fragment="header">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" th:href="@{/}">
+            <span th:text="#{label.app_name}">AppName</span>
+            <!--                <c:when test="${sessionScope.user.isWorker()}">-->
+            <!--                    <span class="badge badge-success">Worker</span>-->
+            <!--                </c:when>-->
+            <!--                <c:when test="${sessionScope.user.isAdmin()}">-->
+            <!--                    <span class="badge badge-danger">Admin</span>-->
+            <!--                </c:when>-->
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/users}" th:text="#{label.admin.list_users}">
+                        List users
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav"
+                th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+                <li class="nav-item">
+                    <a class="nav-link" th:text="#{label.locale.en}"
+                       th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('locale', 'en').toUriString()}">
+                        English
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:text="#{label.locale.uk}"
+                       th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('locale', 'uk').toUriString()}">
+                        Ukrainian
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div th:if="${message != null}" th:text="${message}" class="alert alert-warning text-center fixed-alert"
+         role="alert">
+    </div>
+</header>

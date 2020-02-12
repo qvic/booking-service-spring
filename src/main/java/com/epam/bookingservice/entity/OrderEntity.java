@@ -1,143 +1,43 @@
 package com.epam.bookingservice.entity;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
+
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "\"order\"")
 public class OrderEntity {
 
-    private final Integer id;
-    private final LocalDateTime date;
-    private final UserEntity worker;
-    private final UserEntity client;
-    private final OrderStatusEntity status;
-    private final ServiceEntity service;
+    @Id
+    @GeneratedValue
+    private Integer id;
 
-    private OrderEntity(Builder builder) {
-        id = builder.id;
-        date = builder.date;
-        worker = builder.worker;
-        client = builder.client;
-        status = builder.status;
-        service = builder.service;
-    }
+    @Column
+    private LocalDateTime date;
 
-    public Integer getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "worker_id")
+    private UserEntity worker;
 
-    public LocalDateTime getDate() {
-        return date;
-    }
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private UserEntity client;
 
-    public UserEntity getWorker() {
-        return worker;
-    }
-
-    public UserEntity getClient() {
-        return client;
-    }
-
-    public OrderStatusEntity getStatus() {
-        return status;
-    }
-
-    public ServiceEntity getService() {
-        return service;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderEntity{" +
-                "id=" + id +
-                ", date=" + date +
-                ", worker=" + worker +
-                ", client=" + client +
-                ", status=" + status +
-                ", service=" + service +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        OrderEntity order = (OrderEntity) o;
-        return Objects.equals(id, order.id) &&
-                Objects.equals(date, order.date) &&
-                Objects.equals(worker, order.worker) &&
-                Objects.equals(client, order.client) &&
-                status == order.status &&
-                Objects.equals(service, order.service);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, date, worker, client, status, service);
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static Builder builder(OrderEntity copy) {
-        Builder builder = new Builder();
-        builder.id = copy.getId();
-        builder.date = copy.getDate();
-        builder.worker = copy.getWorker();
-        builder.client = copy.getClient();
-        builder.status = copy.getStatus();
-        builder.service = copy.getService();
-        return builder;
-    }
-
-
-    public static final class Builder {
-        private Integer id;
-        private LocalDateTime date;
-        private UserEntity worker;
-        private UserEntity client;
-        private OrderStatusEntity status;
-        private ServiceEntity service;
-
-        private Builder() {
-        }
-
-        public Builder setId(Integer id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder setDate(LocalDateTime date) {
-            this.date = date;
-            return this;
-        }
-
-        public Builder setWorker(UserEntity worker) {
-            this.worker = worker;
-            return this;
-        }
-
-        public Builder setClient(UserEntity client) {
-            this.client = client;
-            return this;
-        }
-
-        public Builder setStatus(OrderStatusEntity status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder setService(ServiceEntity service) {
-            this.service = service;
-            return this;
-        }
-
-        public OrderEntity build() {
-            return new OrderEntity(this);
-        }
-    }
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private ServiceEntity service;
 }

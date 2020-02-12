@@ -5,7 +5,9 @@ import com.epam.bookingservice.domain.User;
 import com.epam.bookingservice.entity.FeedbackEntity;
 import com.epam.bookingservice.entity.FeedbackStatusEntity;
 import com.epam.bookingservice.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FeedbackMapper implements Mapper<FeedbackEntity, Feedback> {
 
     private Mapper<UserEntity, User> userMapper;
@@ -29,9 +31,9 @@ public class FeedbackMapper implements Mapper<FeedbackEntity, Feedback> {
             return null;
         }
 
-        return new Feedback(
-                entity.getText(),
-                userMapper.mapEntityToDomain(entity.getWorker())
-        );
+        return Feedback.builder()
+                .text(entity.getText())
+                .worker(userMapper.mapEntityToDomain(entity.getWorker()))
+                .build();
     }
 }

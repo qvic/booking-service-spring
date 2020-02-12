@@ -4,10 +4,11 @@ import com.epam.bookingservice.domain.Order;
 import com.epam.bookingservice.domain.Service;
 import com.epam.bookingservice.domain.User;
 import com.epam.bookingservice.entity.OrderEntity;
-import com.epam.bookingservice.entity.OrderStatusEntity;
 import com.epam.bookingservice.entity.ServiceEntity;
 import com.epam.bookingservice.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderMapper implements Mapper<OrderEntity, Order> {
 
     private Mapper<UserEntity, User> userMapper;
@@ -25,11 +26,10 @@ public class OrderMapper implements Mapper<OrderEntity, Order> {
         }
 
         return OrderEntity.builder()
-                .setDate(domain.getDate())
-                .setClient(userMapper.mapDomainToEntity(domain.getClient()))
-                .setWorker(userMapper.mapDomainToEntity(domain.getWorker()))
-                .setStatus(OrderStatusEntity.CREATED)
-                .setService(serviceMapper.mapDomainToEntity(domain.getService()))
+                .date(domain.getDate())
+                .client(userMapper.mapDomainToEntity(domain.getClient()))
+                .worker(userMapper.mapDomainToEntity(domain.getWorker()))
+                .service(serviceMapper.mapDomainToEntity(domain.getService()))
                 .build();
     }
 
@@ -40,10 +40,10 @@ public class OrderMapper implements Mapper<OrderEntity, Order> {
         }
 
         return Order.builder()
-                .setDate(entity.getDate())
-                .setWorker(userMapper.mapEntityToDomain(entity.getWorker()))
-                .setClient(userMapper.mapEntityToDomain(entity.getClient()))
-                .setService(serviceMapper.mapEntityToDomain(entity.getService()))
+                .date(entity.getDate())
+                .worker(userMapper.mapEntityToDomain(entity.getWorker()))
+                .client(userMapper.mapEntityToDomain(entity.getClient()))
+                .service(serviceMapper.mapEntityToDomain(entity.getService()))
                 .build();
     }
 }

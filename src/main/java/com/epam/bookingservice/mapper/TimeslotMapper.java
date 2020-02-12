@@ -4,7 +4,9 @@ import com.epam.bookingservice.domain.Order;
 import com.epam.bookingservice.domain.Timeslot;
 import com.epam.bookingservice.entity.OrderEntity;
 import com.epam.bookingservice.entity.TimeslotEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TimeslotMapper implements Mapper<TimeslotEntity, Timeslot> {
 
     private final Mapper<OrderEntity, Order> orderMapper;
@@ -20,11 +22,11 @@ public class TimeslotMapper implements Mapper<TimeslotEntity, Timeslot> {
         }
 
         return TimeslotEntity.builder()
-                .setId(domain.getId())
-                .setFromTime(domain.getFromTime())
-                .setToTime(domain.getToTime())
-                .setDate(domain.getDate())
-                .setOrder(orderMapper.mapDomainToEntity(domain.getOrder()))
+                .id(domain.getId())
+                .fromTime(domain.getFromTime())
+                .toTime(domain.getToTime())
+                .date(domain.getDate())
+                .order(orderMapper.mapDomainToEntity(domain.getOrder()))
                 .build();
     }
 
@@ -35,11 +37,11 @@ public class TimeslotMapper implements Mapper<TimeslotEntity, Timeslot> {
         }
 
         return Timeslot.builder()
-                .setId(entity.getId())
-                .setFromTime(entity.getFromTime())
-                .setToTime(entity.getToTime())
-                .setDate(entity.getDate())
-                .setOrder(orderMapper.mapEntityToDomain(entity.getOrder()))
+                .id(entity.getId())
+                .fromTime(entity.getFromTime())
+                .toTime(entity.getToTime())
+                .date(entity.getDate())
+                .order(orderMapper.mapEntityToDomain(entity.getOrder()))
                 .build();
     }
 }

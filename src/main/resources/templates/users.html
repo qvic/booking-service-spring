@@ -1,26 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Users</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<h1 th:text="#{label.users}"></h1>
-<table>
-    <tbody>
-    <tr th:each="item : ${usersPage.content}">
-        <td th:text="${item.id}"></td>
-        <td th:text="${item.name}"></td>
-        <td th:text="${item.email}"></td>
-        <td th:text="${item.role}"></td>
-    </tr>
-    </tbody>
-</table>
-<div th:if="${usersPage.totalPages > 0}" class="pagination"
-     th:each="pageNumber : ${pageNumbers}">
-    <a th:href="@{/users(size=${usersPage.size}, page=${pageNumber})}"
-       th:text=${pageNumber}
-       th:class="${pageNumber == bookPage.number + 1} ? active"></a>
+<header th:include="fragments/header :: header"></header>
+<div class="container mt-5">
+    <h3 class="mb-5 text-center" th:text="#{label.users}">Users</h3>
+    <ul class="list-group">
+        <div th:each="item : ${usersPage}"
+             class="form-check-label list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1" th:text="${item.name}">
+                    User Name
+                </h5>
+                <p th:text="${item.id}">
+                    Id
+                </p>
+            </div>
+            <p class="mb-1" th:text="${item.email}">
+                Email
+            </p>
+            <p class="mb-1" th:text="${item.role}">
+                Role
+            </p>
+        </div>
+    </ul>
+    <div class="mt-1 d-flex justify-content-between">
+        <div class="w-25 text-left">
+            <a th:if="${usersPage.hasPrevious()}" th:href="@{/users(page=${usersPage.number - 1},size=${usersPage.size})}">Previous</a>
+        </div>
+        <div class="w-50 text-center">
+            <th:block th:each="i: ${#numbers.sequence(0, usersPage.totalPages - 1)}">
+                <span th:if="${usersPage.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${usersPage.number == i}">
+                <a th:href="@{/users(page=${i},size=${usersPage.size})}">[[${i}+1]]</a>
+                </span>
+            </th:block>
+        </div>
+        <div class="w-25 text-right">
+            <a th:if="${usersPage.hasNext()}" th:href="@{/users(page=${usersPage.number + 1},size=${usersPage.size})}">Next</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.epam.bookingservice.service.impl;
 
+import com.epam.bookingservice.domain.Role;
 import com.epam.bookingservice.domain.User;
 import com.epam.bookingservice.domain.UserLogin;
 import com.epam.bookingservice.entity.RoleEntity;
@@ -11,6 +12,8 @@ import com.epam.bookingservice.service.exception.UserAlreadyExistsException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,32 +35,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> login(UserLogin userLogin) {
-        Optional<UserEntity> userEntityByEmail = userRepository.findByEmail(userLogin.getEmail());
-
-        if (!userEntityByEmail.isPresent()) {
-            return Optional.empty();
-        }
-
-        String hashedPassword = passwordEncoder.encode(userLogin.getPassword());
-        return userEntityByEmail
-                .filter(s -> s.getPassword().equals(hashedPassword))
-                .map(userMapper::mapEntityToDomain);
-    }
-
-    @Override
     public User register(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException();
         }
 
-        User encryptedUser = encodePassword(user);
-        UserEntity savedEntity = userRepository.save(userMapper.mapDomainToEntity(encryptedUser));
+        User encodedUser = preparePasswordAndRole(user);
+        UserEntity savedEntity = userRepository.save(userMapper.mapDomainToEntity(encodedUser));
         return userMapper.mapEntityToDomain(savedEntity);
     }
 
-    private User encodePassword(User user) {
+    private User preparePasswordAndRole(User user) {
         return user.toBuilder()
+                .role(Role.CLIENT)
                 .password(passwordEncoder.encode(user.getPassword()))
                 .build();
     }
@@ -79,5 +69,12 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(userMapper::mapEntityToDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        return userRepository.findByEmail(username)
+                .map(userMapper::mapEntityToDomain)
+                .orElseThrow(() -> new UsernameNotFoundException("User [" + username + "] was not found"));
     }
 }

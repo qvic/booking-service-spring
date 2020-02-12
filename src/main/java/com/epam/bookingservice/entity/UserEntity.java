@@ -1,8 +1,12 @@
 package com.epam.bookingservice.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -14,27 +18,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Builder
-@Getter
-@ToString
-@EqualsAndHashCode
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "\"user\"")
 public class UserEntity {
 
     @Id
     @GeneratedValue
-    private final Integer id;
+    private Integer id;
 
     @Column
-    private final String name;
+    private String name;
 
     @Column
-    private final String email;
+    private String email;
 
     @Column
-    private final String password;
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 10)
-    private final RoleEntity role;
+    @Column
+    private RoleEntity role;
 }

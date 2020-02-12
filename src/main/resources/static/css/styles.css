@@ -1,0 +1,31 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background-color: #f5f5f5;
+}
+
+.radio-label {
+    transition: all .1s ease-out;
+}
+
+input[type=radio]:checked + .radio-label {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.fixed-alert {
+    position: fixed;
+    top: 70px;
+    left: 25%;
+    width: 50%;
+}
+
+.bg-admin-primary {
+    background-color: #c0392b;
+}

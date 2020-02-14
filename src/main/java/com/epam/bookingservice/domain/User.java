@@ -1,42 +1,49 @@
 package com.epam.bookingservice.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.hibernate.validator.constraints.Length;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
 
 @Builder(toBuilder = true)
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
-    private final Integer id;
+    private Integer id;
 
-    @NotNull
-    @Length(min = 1, max = 200)
-    private final String name;
+    @NotNull(message = "{validation.name.not_null}")
+    @Size(min = 1, max = 200, message = "{validation.name.length}")
+    private String name;
 
-    @NotNull
-    @Email
-    private final String email;
+    @NotNull(message = "{validation.email.not_null}")
+    @Email(message = "{validation.email.invalid}")
+    private String email;
 
-    @NotNull
-    @Length(min = 5, max = 200)
-    private final String password;
+    @NotNull(message = "{validation.password.not_null}")
+    @Size(min = 5, max = 200, message = "{validation.password.length}")
+    private String password;
 
-    private final Role role;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override

@@ -8,20 +8,20 @@ import org.springframework.stereotype.Component;
 public class RoleMapper implements Mapper<RoleEntity, Role> {
 
     @Override
-    public RoleEntity mapDomainToEntity(Role domain) {
-        if (domain == null) {
+    public RoleEntity mapDomainToEntity(Role role) {
+        if (role == null) {
             return null;
         }
 
-        return RoleEntity.findByName(domain.name()).orElse(null);
+        return RoleEntity.findByName(role.name()).orElse(null);
     }
 
     @Override
-    public Role mapEntityToDomain(RoleEntity entity) {
-        if (entity == null) {
+    public Role mapEntityToDomain(RoleEntity role) {
+        if (role == null) {
             return null;
         }
 
-        return Role.findByName(entity.name()).orElse(null);
+        return Role.findByName(role.name()).orElse(null);
     }
 }

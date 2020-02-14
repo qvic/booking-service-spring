@@ -1,14 +1,13 @@
 package com.epam.bookingservice.domain;
 
-import java.util.Arrays;
+import com.epam.bookingservice.utility.EnumUtility;
+
 import java.util.Optional;
 
 public enum Role {
     CLIENT, ADMIN, WORKER;
 
     public static Optional<Role> findByName(String name) {
-        return Arrays.stream(values())
-                .filter(role -> role.name().equals(name))
-                .findAny();
+        return EnumUtility.findByName(name, values());
     }
 }

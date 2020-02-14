@@ -10,26 +10,39 @@
 <header th:insert="fragments/header :: header"></header>
 
 <div class="d-flex h-100 justify-content-center align-items-center">
-    <form class="w-25" method="post">
+
+    <form class="w-25" method="post" th:action="@{/sign-up}" th:object="${user}">
         <h3 class="pb-3 text-center" th:text="#{label.sign_up}">
             Sign up
         </h3>
 
-        <label for="inputEmail" class="sr-only"></label>
-        <input name="email" type="text" id="inputEmail" class="form-control" placeholder="Your email" required=""
-               autofocus="">
+        <div>
+            <label for="inputEmail" class="sr-only"></label>
+            <input name="email" type="text" id="inputEmail" class="form-control" placeholder="Your email" required autofocus
+                   th:field="*{email}">
+            <span class="badge badge-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
 
-        <label for="inputName" class="sr-only"></label>
-        <input name="name" type="text" id="inputName" class="mt-1 form-control" placeholder="Your name" required=""
-               autofocus="">
+        <div>
+            <label for="inputName" class="sr-only"></label>
+            <input name="name" type="text" id="inputName" class="mt-1 form-control" placeholder="Your name" required
+                   th:field="*{name}">
+            <span class="badge badge-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
 
-        <label for="input-password" class="sr-only"></label>
-        <input name="password" type="password" id="input-password" class="mt-1 form-control" placeholder="Password"
-               required="">
+        <div>
+            <label for="input-password" class="sr-only"></label>
+            <input name="password" type="password" id="input-password" class="mt-1 form-control" placeholder="Password"
+                   required
+                   th:field="*{password}">
+        </div>
 
-        <label for="repeat-password" class="sr-only"></label>
-        <input type="password" id="repeat-password" class="mt-1 form-control" placeholder="Repeat password"
-               required="">
+        <div>
+            <label for="repeat-password" class="sr-only"></label>
+            <input type="password" id="repeat-password" class="mt-1 form-control" placeholder="Repeat password"
+                   required>
+            <span class="badge badge-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
 
         <button id="submit-button" class="mt-3 btn btn-lg btn-primary btn-block" type="submit"
                 th:text="#{label.sign_up}">

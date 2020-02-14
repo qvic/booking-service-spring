@@ -1,22 +1,24 @@
 package com.epam.bookingservice.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-@Value
-public class UserLogin {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserLoginForm {
 
     @NotNull
     @Email
-    private final String email;
+    private String email;
 
     @NotNull
     @Length(min = 5, max = 200)
-    private final String password;
+    private String password;
 }
 

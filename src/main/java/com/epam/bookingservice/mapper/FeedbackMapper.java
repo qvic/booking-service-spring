@@ -5,13 +5,15 @@ import com.epam.bookingservice.domain.User;
 import com.epam.bookingservice.entity.FeedbackEntity;
 import com.epam.bookingservice.entity.FeedbackStatusEntity;
 import com.epam.bookingservice.entity.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class FeedbackMapper implements Mapper<FeedbackEntity, Feedback> {
 
-    private Mapper<UserEntity, User> userMapper;
-
+    private final Mapper<UserEntity, User> userMapper;
+    
     @Override
     public FeedbackEntity mapDomainToEntity(Feedback domain) {
         if (domain == null) {

@@ -4,16 +4,14 @@ import com.epam.bookingservice.domain.Role;
 import com.epam.bookingservice.domain.User;
 import com.epam.bookingservice.entity.RoleEntity;
 import com.epam.bookingservice.entity.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class UserMapper implements Mapper<UserEntity, User> {
 
     private final Mapper<RoleEntity, Role> roleMapper;
-
-    public UserMapper(Mapper<RoleEntity, Role> roleMapper) {
-        this.roleMapper = roleMapper;
-    }
 
     @Override
     public UserEntity mapDomainToEntity(User domain) {

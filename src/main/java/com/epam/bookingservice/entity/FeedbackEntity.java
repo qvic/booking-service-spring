@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,10 +28,10 @@ import javax.persistence.Table;
 public class FeedbackEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column
+    @Column(name = "text")
     private String text;
 
     @ManyToOne
@@ -38,7 +39,7 @@ public class FeedbackEntity {
     private UserEntity worker;
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(name = "status")
     private FeedbackStatusEntity status;
 }
 

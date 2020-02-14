@@ -6,18 +6,15 @@ import com.epam.bookingservice.domain.User;
 import com.epam.bookingservice.entity.OrderEntity;
 import com.epam.bookingservice.entity.ServiceEntity;
 import com.epam.bookingservice.entity.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class OrderMapper implements Mapper<OrderEntity, Order> {
 
-    private Mapper<UserEntity, User> userMapper;
-    private Mapper<ServiceEntity, Service> serviceMapper;
-
-    public OrderMapper(Mapper<UserEntity, User> userMapper, Mapper<ServiceEntity, Service> serviceMapper) {
-        this.userMapper = userMapper;
-        this.serviceMapper = serviceMapper;
-    }
+    private final Mapper<UserEntity, User> userMapper;
+    private final Mapper<ServiceEntity, Service> serviceMapper;
 
     @Override
     public OrderEntity mapDomainToEntity(Order domain) {

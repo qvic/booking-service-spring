@@ -2,7 +2,6 @@ package com.epam.bookingservice.service.impl;
 
 import com.epam.bookingservice.domain.Role;
 import com.epam.bookingservice.domain.User;
-import com.epam.bookingservice.domain.UserLogin;
 import com.epam.bookingservice.entity.RoleEntity;
 import com.epam.bookingservice.entity.UserEntity;
 import com.epam.bookingservice.mapper.Mapper;
@@ -18,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

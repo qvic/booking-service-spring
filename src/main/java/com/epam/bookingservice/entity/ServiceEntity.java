@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,18 +21,18 @@ import javax.persistence.Table;
 public class ServiceEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "duration_in_timeslots")
     private Integer durationInTimeslots;
 
-    @Column
+    @Column(name = "price")
     private Integer price;
 
-    @Column
+    @Column(name = "workspaces")
     private Integer workspaces;
 }

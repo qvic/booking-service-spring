@@ -4,8 +4,12 @@ import com.epam.bookingservice.domain.Service;
 import com.epam.bookingservice.entity.ServiceEntity;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 @Component
 public class ServiceMapper implements Mapper<ServiceEntity, Service> {
+
+    private static final long TIMESLOT_DURATION = 30L;
 
     @Override
     public ServiceEntity mapDomainToEntity(Service domain) {
@@ -16,7 +20,7 @@ public class ServiceMapper implements Mapper<ServiceEntity, Service> {
         return ServiceEntity.builder()
                 .id(domain.getId())
                 .name(domain.getName())
-                .durationInTimeslots(domain.getDurationInTimeslots())
+                .durationInTimeslots(Math.toIntExact(domain.getDuration().toMinutes() / TIMESLOT_DURATION))
                 .price(domain.getPrice())
                 .build();
     }
@@ -30,7 +34,7 @@ public class ServiceMapper implements Mapper<ServiceEntity, Service> {
         return Service.builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .durationInTimeslots(entity.getDurationInTimeslots())
+                .duration(Duration.ofMinutes(entity.getDurationInTimeslots() * TIMESLOT_DURATION))
                 .price(entity.getPrice())
                 .build();
     }

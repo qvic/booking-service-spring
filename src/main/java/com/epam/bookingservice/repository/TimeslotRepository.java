@@ -1,4 +1,4 @@
-package com.epam.bookingservice.respository;
+package com.epam.bookingservice.repository;
 
 import com.epam.bookingservice.entity.TimeslotEntity;
 import org.springframework.data.repository.CrudRepository;

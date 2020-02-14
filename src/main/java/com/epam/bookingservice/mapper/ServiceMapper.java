@@ -20,7 +20,7 @@ public class ServiceMapper implements Mapper<ServiceEntity, Service> {
         return ServiceEntity.builder()
                 .id(domain.getId())
                 .name(domain.getName())
-                .durationInTimeslots(Math.toIntExact(domain.getDuration().toMinutes() / TIMESLOT_DURATION))
+                .durationInTimeslots(mapDuration(domain.getDuration()))
                 .price(domain.getPrice())
                 .build();
     }
@@ -34,8 +34,18 @@ public class ServiceMapper implements Mapper<ServiceEntity, Service> {
         return Service.builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .duration(Duration.ofMinutes(entity.getDurationInTimeslots() * TIMESLOT_DURATION))
+                .duration(mapDurationInTimeslots(entity.getDurationInTimeslots()))
                 .price(entity.getPrice())
                 .build();
+    }
+
+    private Duration mapDurationInTimeslots(Integer durationInTimeslots) {
+        return durationInTimeslots == null ?
+                null : Duration.ofMinutes(durationInTimeslots * TIMESLOT_DURATION);
+    }
+
+    private Integer mapDuration(Duration duration) {
+        return duration == null ?
+                null : Math.toIntExact(duration.toMinutes() / TIMESLOT_DURATION);
     }
 }

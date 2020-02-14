@@ -31,18 +31,18 @@
     </ul>
     <div class="mt-1 d-flex justify-content-between">
         <div class="w-25 text-left">
-            <a th:if="${usersPage.hasPrevious()}" th:href="@{/users(page=${usersPage.number - 1},size=${usersPage.size})}">Previous</a>
+            <a th:if="${usersPage.hasPrevious()}" th:href="@{/admin/users(page=${usersPage.number - 1},size=${usersPage.size})}">Previous</a>
         </div>
         <div class="w-50 text-center">
             <th:block th:each="i: ${#numbers.sequence(0, usersPage.totalPages - 1)}">
                 <span th:if="${usersPage.number == i}" class="selected">[[${i}+1]]</span>
                 <span th:unless="${usersPage.number == i}">
-                <a th:href="@{/users(page=${i},size=${usersPage.size})}">[[${i}+1]]</a>
+                <a th:href="@{/admin/users(page=${i},size=${usersPage.size})}">[[${i}+1]]</a>
                 </span>
             </th:block>
         </div>
         <div class="w-25 text-right">
-            <a th:if="${usersPage.hasNext()}" th:href="@{/users(page=${usersPage.number + 1},size=${usersPage.size})}">Next</a>
+            <a th:if="${usersPage.hasNext()}" th:href="@{/admin/users(page=${usersPage.number + 1},size=${usersPage.size})}">Next</a>
         </div>
     </div>
 </div>

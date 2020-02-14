@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Nav</title>
@@ -11,20 +11,25 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" th:href="@{/}">
             <span th:text="#{label.app_name}">AppName</span>
-            <!--                <c:when test="${sessionScope.user.isWorker()}">-->
-            <!--                    <span class="badge badge-success">Worker</span>-->
-            <!--                </c:when>-->
-            <!--                <c:when test="${sessionScope.user.isAdmin()}">-->
-            <!--                    <span class="badge badge-danger">Admin</span>-->
-            <!--                </c:when>-->
+            <span sec:authorize="hasAuthority('WORKER')" class="badge badge-success">Worker</span>
+            <span sec:authorize="hasAuthority('ADMIN')" class="badge badge-danger">Admin</span>
         </a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/users}" th:text="#{label.admin.list_users}">
-                        List users
-                    </a>
-                </li>
+                <th:block sec:authorize="isAuthenticated()">
+                    <li class="nav-item">
+                        <span class="nav-link"><span th:text="#{label.logged_in_as}">Logged in as</span>
+                            <strong sec:authentication="name">Name</strong></span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}" th:text="#{label.log_out}">Log out</a>
+                    </li>
+                </th:block>
+                <th:block sec:authorize="!isAuthenticated()">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}" th:text="#{label.log_in}">Log in</a>
+                    </li>
+                </th:block>
             </ul>
             <ul class="navbar-nav"
                 th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">

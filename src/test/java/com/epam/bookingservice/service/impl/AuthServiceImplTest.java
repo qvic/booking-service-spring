@@ -5,7 +5,7 @@ import com.epam.bookingservice.domain.User;
 import com.epam.bookingservice.entity.RoleEntity;
 import com.epam.bookingservice.entity.UserEntity;
 import com.epam.bookingservice.mapper.Mapper;
-import com.epam.bookingservice.respository.UserRepository;
+import com.epam.bookingservice.repository.UserRepository;
 import com.epam.bookingservice.service.exception.UserAlreadyExistsException;
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserServiceImplTest {
+public class AuthServiceImplTest {
 
     private static final String PASSWORD = "password";
     private static final String ENCODED_PASSWORD = "encoded_password";
@@ -45,11 +45,11 @@ public class UserServiceImplTest {
     @Mock
     private Mapper<UserEntity, User> userMapper;
 
-    private UserServiceImpl userService;
+    private AuthServiceImpl authService;
 
     @Before
     public void injectMocks() {
-        userService = new UserServiceImpl(userRepository, passwordEncoder, userMapper);
+        authService = new AuthServiceImpl(userRepository, passwordEncoder, userMapper);
     }
 
     @After
@@ -75,7 +75,7 @@ public class UserServiceImplTest {
                 .email(USER_EMAIL)
                 .build();
 
-        User registeredUser = userService.register(userToBeRegistered);
+        User registeredUser = authService.register(userToBeRegistered);
 
         assertEquals(USER, registeredUser);
         verify(userRepository).findByEmail(eq(USER_EMAIL));
@@ -87,7 +87,7 @@ public class UserServiceImplTest {
         when(userRepository.findByEmail(eq(USER_EMAIL))).thenReturn(Optional.of(USER_ENTITY));
 
         expectedException.expect(UserAlreadyExistsException.class);
-        userService.register(USER);
+        authService.register(USER);
     }
 
     private static User initUser() {

@@ -1,35 +1,30 @@
 package com.epam.bookingservice.service.impl;
 
 import com.epam.bookingservice.domain.Order;
-import com.epam.bookingservice.domain.Service;
 import com.epam.bookingservice.entity.OrderEntity;
 import com.epam.bookingservice.entity.ServiceEntity;
 import com.epam.bookingservice.entity.UserEntity;
 import com.epam.bookingservice.mapper.Mapper;
-import com.epam.bookingservice.respository.OrderRepository;
-import com.epam.bookingservice.respository.ServiceRepository;
-import com.epam.bookingservice.respository.UserRepository;
+import com.epam.bookingservice.repository.OrderRepository;
+import com.epam.bookingservice.repository.ServiceRepository;
+import com.epam.bookingservice.repository.UserRepository;
 import com.epam.bookingservice.service.OrderService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
+@Service
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ServiceRepository serviceRepository;
     private final UserRepository userRepository;
     private final Mapper<OrderEntity, Order> orderMapper;
-    private final Mapper<ServiceEntity, Service> serviceMapper;
-
-    public OrderServiceImpl(OrderRepository orderRepository, ServiceRepository serviceRepository, UserRepository userRepository,
-                            Mapper<OrderEntity, Order> orderMapper, Mapper<ServiceEntity, Service> serviceMapper) {
-        this.orderRepository = orderRepository;
-        this.serviceRepository = serviceRepository;
-        this.userRepository = userRepository;
-        this.orderMapper = orderMapper;
-        this.serviceMapper = serviceMapper;
-    }
+    // rename domain service
+    private final Mapper<ServiceEntity, com.epam.bookingservice.domain.Service> serviceMapper;
 
     @Override
     public List<Order> findAllByClientId(Integer clientId) {
@@ -60,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Service> findAllServices() {
+    public List<com.epam.bookingservice.domain.Service> findAllServices() {
         return serviceRepository.findAll().stream()
                 .map(serviceMapper::mapEntityToDomain)
                 .collect(Collectors.toList());

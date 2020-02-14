@@ -1,6 +1,8 @@
 package com.epam.bookingservice.config;
 
-import com.epam.bookingservice.service.UserService;
+import com.epam.bookingservice.domain.Role;
+import com.epam.bookingservice.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,22 +14,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
-
-    public SecurityConfiguration(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService)
+        auth.userDetailsService(authService)
                 .passwordEncoder(passwordEncoder);
     }
 
@@ -38,12 +36,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/", "/sign-up", "/login").permitAll()
+                .antMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
+                .antMatchers("/client/**").hasAuthority(Role.CLIENT.name())
+                .antMatchers("/worker/**").hasAuthority(Role.WORKER.name())
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
                 .permitAll()
                 .loginPage("/login")
-                .defaultSuccessUrl("/users")
+                .defaultSuccessUrl("/")
                 .and()
             .logout()
                 .permitAll()

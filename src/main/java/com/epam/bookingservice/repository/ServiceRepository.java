@@ -1,4 +1,4 @@
-package com.epam.bookingservice.respository;
+package com.epam.bookingservice.repository;
 
 import com.epam.bookingservice.entity.ServiceEntity;
 import org.springframework.data.repository.CrudRepository;

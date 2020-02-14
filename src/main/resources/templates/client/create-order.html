@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create order</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container my-5">
+    <h3 class="mb-5 text-center" th:text="#{label.client.create_order}">Create order</h3>
+
+    <div class="jumbotron w-50 mx-auto text-center">
+        <h3>Already selected:</h3>
+        <ul class="h5">
+            <th:block th:if="${session.timeslotId != null}">
+                <li>Timeslot</li>
+            </th:block>
+            <th:block th:if="${session.serviceId != null}">
+                <li>Service</li>
+            </th:block>
+            <th:block th:if="${session.workerId != null}">
+                <li>Worker</li>
+            </th:block>
+        </ul>
+
+        <form method="post">
+            <button class="w-50 my-5 mx-auto btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+

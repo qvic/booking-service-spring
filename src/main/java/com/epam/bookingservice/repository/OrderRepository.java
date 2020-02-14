@@ -1,4 +1,4 @@
-package com.epam.bookingservice.respository;
+package com.epam.bookingservice.repository;
 
 import com.epam.bookingservice.entity.OrderEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;

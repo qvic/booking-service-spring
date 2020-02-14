@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select service</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container my-5">
+    <h3 class="mb-5 text-center">Orders</h3>
+    <div class="list-group">
+        <th:block th:each="item : ${orders}">
+            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 mb-2 justify-content-between">
+                    <h5 th:text="${item.date}">
+                        Date
+                    </h5>
+                </div>
+                <div class="mb-1">
+                    <h5>Service</h5>
+                    <p><span th:text="${item.service.name}">Name</span> - $<span th:text="${item.service.price}">Price</span></p>
+                </div>
+                <div class="mb-1">
+                    <h5>Worker</h5>
+                    <p><span th:text="${item.worker.name}">Name</span></p>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

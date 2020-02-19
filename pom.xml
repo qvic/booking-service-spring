@@ -8,12 +8,12 @@
         <version>2.2.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.epam</groupId>
-    <artifactId>bookingservice</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <groupId>com.salon</groupId>
+    <artifactId>booking-service</artifactId>
+    <version>0.1</version>
     <packaging>war</packaging>
-    <name>bookingservice</name>
-    <description>Salon booking service</description>
+
+    <name>BookingService</name>
 
     <properties>
         <java.version>1.8</java.version>
@@ -71,12 +71,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.junit.vintage</groupId>-->
-<!--                    <artifactId>junit-vintage-engine</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -101,7 +95,6 @@
             <version>5.5.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.client.leave_feedback}">Leave feedback</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container my-5">
+    <h3 class="mb-5 text-center" th:text="#{label.client.select_order_to_leave_feedback}">Select order</h3>
+    <form method="post" th:object="${feedback}">
+        <div class="list-group">
+            <th:block th:each="order : ${orders}">
+
+                <th:block th:switch="${selectedOrderId ne null and order.id == selectedOrderId}">
+                    <input name="order-id" class="d-none" type="radio"
+                           required
+                           checked
+                           th:field="*{orderId}"
+                           th:case="true"
+                           th:id="${'order-' + order.id}"
+                           th:value="${order.id}">
+                    <input name="order-id" class="d-none" type="radio"
+                           required
+                           th:field="*{orderId}"
+                           th:case="false"
+                           th:id="${'order-' + order.id}"
+                           th:value="${order.id}">
+                </th:block>
+
+                <label th:for="${'order-' + order.id}"
+                       class="radio-label form-check-label list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 mb-2 justify-content-between">
+                        <h5 th:text="${#temporals.format(order.date, 'dd.MM.YYYY HH:mm')}">
+                            Date
+                        </h5>
+                    </div>
+                    <div class="mb-1">
+                        <h5 th:text="#{label.service}">Service</h5>
+                        <p><span th:text="${order.service.name}">Name</span> ($<span
+                                th:text="${order.service.price}">Price</span>)</p>
+                    </div>
+                    <div class="mb-1">
+                        <h5 th:text="#{label.worker}">Worker</h5>
+                        <p><span th:text="${order.worker.name}">Name</span></p>
+                    </div>
+                </label>
+            </th:block>
+        </div>
+        <label class="my-2" for="feedbackText" th:text="#{label.client.feedback_text}">
+            Feedback text
+        </label>
+        <textarea name="text" class="form-control" id="feedbackText" rows="3" th:field="*{text}"></textarea>
+        <span class="badge badge-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></span>
+
+        <button class="w-25 mx-auto my-5 btn btn-primary btn-lg btn-block" th:text="#{label.submit}" type="submit">
+            Submit
+        </button>
+    </form>
+</div>
+</body>
+</html>

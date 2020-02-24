@@ -2,6 +2,7 @@ package com.salon.booking.mapper;
 
 import com.salon.booking.domain.Order;
 import com.salon.booking.domain.Timeslot;
+import com.salon.booking.entity.DurationEntity;
 import com.salon.booking.entity.OrderEntity;
 import com.salon.booking.entity.TimeslotEntity;
 import org.junit.After;
@@ -11,8 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
@@ -22,6 +26,15 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TimeslotMapperTest {
+
+    private static final Order ORDER = Order.builder().build();
+    private static final List<Order> ORDERS = Collections.singletonList(ORDER);
+    private static final Timeslot TIMESLOT = initTimeslot();
+
+    private static final OrderEntity ORDER_ENTITY = OrderEntity.builder().build();
+
+    private static final List<OrderEntity> ORDER_ENTITIES = Collections.singletonList(ORDER_ENTITY);
+    private static final TimeslotEntity TIMESLOT_ENTITY = initTimeslotEntity();
 
     @Mock
     private Mapper<OrderEntity, Order> orderMapper;
@@ -36,60 +49,16 @@ public class TimeslotMapperTest {
 
     @Test
     public void mapDomainToEntityShouldMapCorrectly() {
-        Order order = Order.builder()
-                .build();
+        when(orderMapper.mapDomainToEntity(eq(ORDER))).thenReturn(ORDER_ENTITY);
 
-        OrderEntity orderEntity = OrderEntity.builder()
-                .build();
-
-        when(orderMapper.mapDomainToEntity(eq(order))).thenReturn(orderEntity);
-
-        Timeslot timeslot = Timeslot.builder()
-                .fromTime(LocalTime.of(12, 0))
-                .toTime(LocalTime.of(12, 30))
-                .date(LocalDate.of(2020, 2, 2))
-                .order(order)
-                .id(1)
-                .build();
-
-        TimeslotEntity timeslotEntity = TimeslotEntity.builder()
-                .fromTime(LocalTime.of(12, 0))
-                .toTime(LocalTime.of(12, 30))
-                .date(LocalDate.of(2020, 2, 2))
-                .order(orderEntity)
-                .id(1)
-                .build();
-
-        assertEquals(timeslotEntity, timeslotMapper.mapDomainToEntity(timeslot));
+        assertEquals(TIMESLOT_ENTITY, timeslotMapper.mapDomainToEntity(TIMESLOT));
     }
 
     @Test
     public void mapEntityToDomainShouldMapCorrectly() {
-        Order order = Order.builder()
-                .build();
+        when(orderMapper.mapEntityToDomain(eq(ORDER_ENTITY))).thenReturn(ORDER);
 
-        OrderEntity orderEntity = OrderEntity.builder()
-                .build();
-
-        when(orderMapper.mapEntityToDomain(eq(orderEntity))).thenReturn(order);
-
-        Timeslot timeslot = Timeslot.builder()
-                .fromTime(LocalTime.of(12, 0))
-                .toTime(LocalTime.of(12, 30))
-                .date(LocalDate.of(2020, 2, 2))
-                .order(order)
-                .id(1)
-                .build();
-
-        TimeslotEntity timeslotEntity = TimeslotEntity.builder()
-                .fromTime(LocalTime.of(12, 0))
-                .toTime(LocalTime.of(12, 30))
-                .date(LocalDate.of(2020, 2, 2))
-                .order(orderEntity)
-                .id(1)
-                .build();
-
-        assertEquals(timeslot, timeslotMapper.mapEntityToDomain(timeslotEntity));
+        assertEquals(TIMESLOT, timeslotMapper.mapEntityToDomain(TIMESLOT_ENTITY));
     }
 
     @Test
@@ -100,5 +69,25 @@ public class TimeslotMapperTest {
     @Test
     public void mapEntityToDomainShouldReturnNullOnNullParameter() {
         assertNull(timeslotMapper.mapEntityToDomain(null));
+    }
+
+    private static Timeslot initTimeslot() {
+        return Timeslot.builder()
+                .fromTime(LocalTime.of(12, 0))
+                .duration(Duration.ofMinutes(30))
+                .date(LocalDate.of(2020, 2, 2))
+                .orders(ORDERS)
+                .id(1)
+                .build();
+    }
+
+    private static TimeslotEntity initTimeslotEntity() {
+        return TimeslotEntity.builder()
+                .fromTime(LocalTime.of(12, 0))
+                .duration(new DurationEntity(null, 30))
+                .date(LocalDate.of(2020, 2, 2))
+                .orders(ORDER_ENTITIES)
+                .id(1)
+                .build();
     }
 }

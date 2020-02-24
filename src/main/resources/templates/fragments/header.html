@@ -24,6 +24,58 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/logout}" th:text="#{label.log_out}">Log out</a>
                     </li>
+                    <th:block sec:authorize="hasAuthority('CLIENT')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/client/order-service}"
+                               th:text="#{label.client.create_order}">Create order</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/client/orders}"
+                               th:text="#{label.client.previous_orders}">Previous orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/client/feedback}"
+                               th:text="#{label.client.feedback}">Feedback</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/client/leave-feedback}"
+                               th:text="#{label.client.leave_feedback}">Leave feedback</a>
+                        </li>
+                    </th:block>
+                    <th:block sec:authorize="hasAuthority('WORKER')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/worker/timetable}" th:text="#{label.worker.timetable}">
+                                Timetable
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/worker/feedback}" th:text="#{label.worker.feedback}">
+                                Feedback
+                            </a>
+                        </li>
+                    </th:block>
+                    <th:block sec:authorize="hasAuthority('ADMIN')">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/clients}" th:text="#{label.admin.list_clients}">
+                                List clients
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/workers}" th:text="#{label.admin.list_workers}">
+                                List workers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/timetable}" th:text="#{label.admin.timetable}">
+                                Timetable
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/feedback}" th:text="#{label.admin.feedback}">
+                                Approve feedback
+                            </a>
+                        </li>
+                    </th:block>
                 </th:block>
                 <th:block sec:authorize="!isAuthenticated()">
                     <li class="nav-item">

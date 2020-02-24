@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.admin.approve_feedback}">Approve feedback</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container my-5">
+    <h3 class="mb-5 text-center" th:text="#{label.admin.approve_feedback}">Approve feedback</h3>
+    <form method="post" th:action="@{/admin/approve-feedback}">
+        <div class="list-group">
+            <th:block th:each="feedback : ${page}">
+
+                <input name="feedback-id" class="d-none" type="radio" required
+                       th:id="${'feedback-' + feedback.id}" th:value="${feedback.id}">
+
+                <label th:for="${'feedback-' + feedback.id}"
+                       class="radio-label list-group-item list-group-item-action flex-column align-items-start">
+                    <h5 class="mb-1">
+                        <span class="text-muted" th:text="#{label.order}">Order</span> #<span
+                            th:text="${feedback.order.id}">Id</span>
+                    </h5>
+                    <h5 class="mb-1">
+                        <span class="text-muted" th:text="#{label.to_worker}">To worker</span>
+                        <span th:text="${feedback.order.worker.name}">Name</span>
+                        (<span th:text="${feedback.order.worker.email}">Email</span>)
+                    </h5>
+                    <p class="mb-1" th:text="${feedback.text}">
+                        Text
+                    </p>
+                </label>
+            </th:block>
+        </div>
+        <button class="w-25 mx-auto my-5 btn btn-primary btn-lg btn-block" type="submit"
+                th:text="#{label.admin.approve_feedback}">
+            Approve feedback
+        </button>
+    </form>
+    <div class="mt-1 d-flex justify-content-between">
+        <div class="w-25 text-left">
+            <a th:if="${page.hasPrevious()}" th:href="@{/admin/feedback(page=${page.number - 1},size=${page.size})}">Previous</a>
+        </div>
+        <div class="w-50 text-center">
+            <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+                <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${page.number == i}">
+                <a th:href="@{/admin/feedback(page=${i},size=${page.size})}">[[${i}+1]]</a>
+                </span>
+            </th:block>
+        </div>
+        <div class="w-25 text-right">
+            <a th:if="${page.hasNext()}"
+               th:href="@{/admin/feedback(page=${page.number + 1},size=${page.size})}">Next</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

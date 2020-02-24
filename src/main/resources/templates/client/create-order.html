@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create order</title>
+    <title th:text="#{label.client.create_order}">Create order</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
@@ -12,22 +12,28 @@
 <div class="container my-5">
     <h3 class="mb-5 text-center" th:text="#{label.client.create_order}">Create order</h3>
 
-    <div class="jumbotron w-50 mx-auto text-center">
-        <h3>Already selected:</h3>
-        <ul class="h5">
-            <th:block th:if="${session.timeslotId != null}">
-                <li>Timeslot</li>
-            </th:block>
-            <th:block th:if="${session.serviceId != null}">
-                <li>Service</li>
-            </th:block>
-            <th:block th:if="${session.workerId != null}">
-                <li>Worker</li>
-            </th:block>
-        </ul>
+    <div class="jumbotron w-75 mx-auto text-center">
+        <h3 class="mb-5" th:text="#{label.client.already_selected}">Already selected</h3>
+        <th:block th:if="${timeslot != null}">
+            <h5><span class="text-muted" th:text="#{label.timeslot}">Timeslot</span>: <span
+                    th:text="${timeslot.fromTime}"></span> (<span
+                    th:text="${timeslot.duration.toMinutes()}"></span> min)</h5>
+        </th:block>
+        <th:block th:if="${service != null}">
+            <h5><span class="text-muted" th:text="#{label.service}">Service</span>: <span
+                    th:text="${service.name}"></span> ($<span
+                    th:text="${service.price}"></span>)</h5>
+        </th:block>
+        <th:block th:if="${worker != null}">
+            <h5><span class="text-muted" th:text="#{label.worker}">Worker</span>: <span
+                    th:text="${worker.name}"></span>
+            </h5>
+        </th:block>
 
         <form method="post">
-            <button class="w-50 my-5 mx-auto btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+            <button class="w-50 my-5 mx-auto btn btn-primary btn-lg btn-block" type="submit" th:text="#{label.submit}">
+                Submit
+            </button>
         </form>
     </div>
 </div>

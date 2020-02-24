@@ -1,8 +1,8 @@
 package com.salon.booking.mapper;
 
-import com.salon.booking.entity.RoleEntity;
 import com.salon.booking.domain.Role;
 import com.salon.booking.domain.User;
+import com.salon.booking.entity.RoleEntity;
 import com.salon.booking.entity.UserEntity;
 import org.junit.After;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserMapperTest {
-
+    
     @Mock
     private Mapper<RoleEntity, Role> roleMapper;
 

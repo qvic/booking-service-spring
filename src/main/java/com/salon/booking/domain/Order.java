@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Value
 public class Order {
 
+    private final Integer id;
     private final LocalDateTime date;
     private final User worker;
     private final User client;
-    private final Service service;
+    private final SalonService service;
 }

@@ -14,7 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Builder
+@Builder(toBuilder = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,19 +23,19 @@ import javax.persistence.Table;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 200, nullable = false)
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 254, unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 60, nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role", length = 10, nullable = false)
     private RoleEntity role;
 }

@@ -7,15 +7,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @Data
@@ -26,39 +29,22 @@ import java.util.Objects;
 public class TimeslotEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "from_time")
+    @Column(name = "from_time", nullable = false)
     private LocalTime fromTime;
 
-    @Column(name = "to_time")
-    private LocalTime toTime;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "duration_id", nullable = false)
+    private DurationEntity duration;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private OrderEntity order;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TimeslotEntity that = (TimeslotEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(fromTime, that.fromTime) &&
-                Objects.equals(toTime, that.toTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, date, fromTime, toTime);
-    }
+    @ManyToMany
+    @JoinTable(name = "order_timeslot",
+            joinColumns = @JoinColumn(name = "timeslot_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private List<OrderEntity> orders;
 }

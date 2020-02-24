@@ -1,10 +1,11 @@
 package com.salon.booking.mapper;
 
 import com.salon.booking.domain.Feedback;
-import com.salon.booking.entity.FeedbackStatusEntity;
-import com.salon.booking.domain.User;
+import com.salon.booking.domain.FeedbackStatus;
+import com.salon.booking.domain.Order;
 import com.salon.booking.entity.FeedbackEntity;
-import com.salon.booking.entity.UserEntity;
+import com.salon.booking.entity.FeedbackStatusEntity;
+import com.salon.booking.entity.OrderEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,30 +13,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class FeedbackMapper implements Mapper<FeedbackEntity, Feedback> {
 
-    private final Mapper<UserEntity, User> userMapper;
-    
+    private final Mapper<OrderEntity, Order> orderMapper;
+    private final Mapper<FeedbackStatusEntity, FeedbackStatus> feedbackStatusMapper;
+
     @Override
-    public FeedbackEntity mapDomainToEntity(Feedback domain) {
-        if (domain == null) {
+    public FeedbackEntity mapDomainToEntity(Feedback feedback) {
+        if (feedback == null) {
             return null;
         }
 
         return FeedbackEntity.builder()
-                .text(domain.getText())
+                .id(feedback.getId())
+                .text(feedback.getText())
+                .order(orderMapper.mapDomainToEntity(feedback.getOrder()))
                 .status(FeedbackStatusEntity.CREATED)
-                .worker(userMapper.mapDomainToEntity(domain.getWorker()))
                 .build();
     }
 
     @Override
-    public Feedback mapEntityToDomain(FeedbackEntity entity) {
-        if (entity == null) {
+    public Feedback mapEntityToDomain(FeedbackEntity feedback) {
+        if (feedback == null) {
             return null;
         }
 
         return Feedback.builder()
-                .text(entity.getText())
-                .worker(userMapper.mapEntityToDomain(entity.getWorker()))
+                .id(feedback.getId())
+                .text(feedback.getText())
+                .order(orderMapper.mapEntityToDomain(feedback.getOrder()))
+                .status(feedbackStatusMapper.mapEntityToDomain(feedback.getStatus()))
                 .build();
     }
 }

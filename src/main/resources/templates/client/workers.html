@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Select service</title>
+    <title th:text="#{label.client.select_worker}">Select worker</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
@@ -10,22 +10,20 @@
 <header th:insert="fragments/header :: header"></header>
 
 <div class="container my-5">
-    <h3 class="mb-5 text-center" th:text="#{label.client.select_service}">Select service</h3>
+    <h3 class="mb-5 text-center" th:text="#{label.client.select_worker}">Select worker</h3>
 
     <form method="post">
         <div class="list-group">
-            <th:block th:each="item : ${services}">
-                <input name="service-id" class="d-none" type="radio"
-                       th:id="${'service-' + item.id}" th:value="${item.id}">
+            <th:block th:each="item : ${workers}">
+                <input name="worker-id" class="d-none" type="radio"
+                       th:id="${'worker-' + item.id}" th:value="${item.id}">
 
-                <label th:for="${'service-' + item.id}"
+                <label th:for="${'worker-' + item.id}"
                        class="radio-label form-check-label list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1" th:text="${item.name}">
-                            Service name
+                            Worker name
                         </h5>
-                        <p th:text="${item.price}">
-                        </p>
                     </div>
                 </label>
             </th:block>

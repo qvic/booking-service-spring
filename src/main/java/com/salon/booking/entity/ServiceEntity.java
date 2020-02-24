@@ -21,18 +21,15 @@ import javax.persistence.Table;
 public class ServiceEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "duration_in_timeslots")
-    private Integer durationInTimeslots;
+    @Column(name = "duration_minutes", nullable = false)
+    private Integer durationMinutes;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Integer price;
-
-    @Column(name = "workspaces")
-    private Integer workspaces;
 }

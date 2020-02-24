@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.client.feedback}">Feedback</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container my-5">
+    <h3 class="mb-5 text-center" th:text="#{label.client.feedback}">Feedback</h3>
+    <div class="list-group">
+        <div th:each="feedback : ${page}"
+             class="list-group-item list-group-item-action flex-column align-items-start">
+            <h5 class="mb-1">
+                <span class="text-muted" th:text="#{label.order}">Order</span> #<span
+                    th:text="${feedback.order.id}">Id</span>
+            </h5>
+            <h5 class="mb-1">
+                <span class="text-muted" th:text="#{label.to_worker}">To worker</span>
+                <span th:text="${feedback.order.worker.name}">Name</span>
+                (<span th:text="${feedback.order.worker.email}">Email</span>)
+            </h5>
+            <p class="text-muted mb-3" th:text="${feedback.status}">
+                Status
+            </p>
+            <p class="mb-1" th:text="${feedback.text}">
+                Text
+            </p>
+        </div>
+    </div>
+    <div class="mt-1 d-flex justify-content-between">
+        <div class="w-25 text-left">
+            <a th:if="${page.hasPrevious()}" th:href="@{/client/feedback(page=${page.number - 1},size=${page.size})}">Previous</a>
+        </div>
+        <div class="w-50 text-center">
+            <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+                <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${page.number == i}">
+                <a th:href="@{/client/feedback(page=${i},size=${page.size})}">[[${i}+1]]</a>
+                </span>
+            </th:block>
+        </div>
+        <div class="w-25 text-right">
+            <a th:if="${page.hasNext()}" th:href="@{/client/feedback(page=${page.number + 1},size=${page.size})}">Next</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

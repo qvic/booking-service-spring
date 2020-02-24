@@ -13,12 +13,12 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class UserLoginForm {
 
-    @NotNull
-    @Email
+    @NotNull(message = "{validation.email.not_null}")
+    @Email(message = "{validation.email.invalid}")
     private String email;
 
-    @NotNull
-    @Length(min = 5, max = 200)
+    @NotNull(message = "{validation.password.not_null}")
+    @Length(min = 5, max = 200, message = "{validation.password.length}")
     private String password;
 }
 

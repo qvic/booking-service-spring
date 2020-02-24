@@ -1,10 +1,10 @@
 package com.salon.booking.mapper;
 
 import com.salon.booking.domain.Order;
-import com.salon.booking.domain.Service;
+import com.salon.booking.domain.SalonService;
+import com.salon.booking.domain.User;
 import com.salon.booking.entity.OrderEntity;
 import com.salon.booking.entity.ServiceEntity;
-import com.salon.booking.domain.User;
 import com.salon.booking.entity.UserEntity;
 import junit.framework.TestCase;
 import org.junit.After;
@@ -29,7 +29,7 @@ public class OrderMapperTest {
     private Mapper<UserEntity, User> userMapper;
 
     @Mock
-    private Mapper<ServiceEntity, Service> serviceMapper;
+    private Mapper<ServiceEntity, SalonService> serviceMapper;
 
     private OrderMapper orderMapper;
 
@@ -61,7 +61,7 @@ public class OrderMapperTest {
                 .id(2)
                 .build();
 
-        Service service = Service.builder()
+        SalonService service = SalonService.builder()
                 .id(1)
                 .build();
 
@@ -89,7 +89,7 @@ public class OrderMapperTest {
                 .service(serviceEntity)
                 .build();
 
-        TestCase.assertEquals(orderEntity, orderMapper.mapDomainToEntity(order));
+        assertEquals(orderEntity, orderMapper.mapDomainToEntity(order));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class OrderMapperTest {
                 .id(2)
                 .build();
 
-        Service service = Service.builder()
+        SalonService service = SalonService.builder()
                 .id(1)
                 .build();
 
@@ -144,7 +144,7 @@ public class OrderMapperTest {
 
     @Test
     public void mapDomainToEntityShouldReturnNullOnNullParameter() {
-        TestCase.assertNull(orderMapper.mapDomainToEntity(null));
+        assertNull(orderMapper.mapDomainToEntity(null));
     }
 
     @Test

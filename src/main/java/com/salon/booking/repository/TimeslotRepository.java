@@ -10,5 +10,7 @@ import java.util.List;
 @Repository
 public interface TimeslotRepository extends CrudRepository<TimeslotEntity, Integer> {
 
-    List<TimeslotEntity> findAllByDateBetween(LocalDate from, LocalDate to);
+    List<TimeslotEntity> findAllByDateBetweenOrderByDateAscFromTimeAsc(LocalDate from, LocalDate to);
+
+    List<TimeslotEntity> findAllByDateOrderByDateAscFromTimeAsc(LocalDate date);
 }

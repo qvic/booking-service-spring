@@ -2,16 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title th:text="#{label.admin.list_workers}">Workers</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 <header th:include="fragments/header :: header"></header>
 <div class="container mt-5">
-    <h3 class="mb-5 text-center" th:text="#{label.users}">Users</h3>
-    <ul class="list-group">
-        <div th:each="item : ${usersPage}"
+    <h3 class="mb-5 text-center" th:text="#{label.admin.list_workers}">Workers</h3>
+    <div class="list-group">
+        <div th:each="item : ${page}"
              class="form-check-label list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1" th:text="${item.name}">
@@ -28,21 +28,21 @@
                 Role
             </p>
         </div>
-    </ul>
+    </div>
     <div class="mt-1 d-flex justify-content-between">
         <div class="w-25 text-left">
-            <a th:if="${usersPage.hasPrevious()}" th:href="@{/admin/users(page=${usersPage.number - 1},size=${usersPage.size})}">Previous</a>
+            <a th:if="${page.hasPrevious()}" th:href="@{/admin/workers(page=${page.number - 1},size=${page.size})}">Previous</a>
         </div>
         <div class="w-50 text-center">
-            <th:block th:each="i: ${#numbers.sequence(0, usersPage.totalPages - 1)}">
-                <span th:if="${usersPage.number == i}" class="selected">[[${i}+1]]</span>
-                <span th:unless="${usersPage.number == i}">
-                <a th:href="@{/admin/users(page=${i},size=${usersPage.size})}">[[${i}+1]]</a>
+            <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+                <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
+                <span th:unless="${page.number == i}">
+                <a th:href="@{/admin/workers(page=${i},size=${page.size})}">[[${i}+1]]</a>
                 </span>
             </th:block>
         </div>
         <div class="w-25 text-right">
-            <a th:if="${usersPage.hasNext()}" th:href="@{/admin/users(page=${usersPage.number + 1},size=${usersPage.size})}">Next</a>
+            <a th:if="${page.hasNext()}" th:href="@{/admin/workers(page=${page.number + 1},size=${page.size})}">Next</a>
         </div>
     </div>
 </div>

@@ -1,16 +1,18 @@
 package com.salon.booking.repository;
 
-import com.salon.booking.entity.FeedbackStatusEntity;
 import com.salon.booking.entity.FeedbackEntity;
+import com.salon.booking.entity.FeedbackStatusEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface FeedbackRepository extends PagingAndSortingRepository<FeedbackEntity, Integer> {
 
-    List<FeedbackEntity> findAllByWorkerId(Integer id);
+    Page<FeedbackEntity> findAllByOrderWorkerIdAndStatus(Integer workerId, FeedbackStatusEntity status, Pageable properties);
 
-    List<FeedbackEntity> findAllByStatus(FeedbackStatusEntity status);
+    Page<FeedbackEntity> findAllByOrderClientId(Integer clientId, Pageable properties);
+
+    Page<FeedbackEntity> findAllByStatus(FeedbackStatusEntity status, Pageable properties);
 }

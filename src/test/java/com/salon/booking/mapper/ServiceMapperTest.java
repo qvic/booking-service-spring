@@ -1,6 +1,6 @@
 package com.salon.booking.mapper;
 
-import com.salon.booking.domain.Service;
+import com.salon.booking.domain.SalonService;
 import com.salon.booking.entity.ServiceEntity;
 import junit.framework.TestCase;
 import org.junit.Before;
@@ -22,7 +22,7 @@ public class ServiceMapperTest {
 
     @Test
     public void mapDomainToEntityShouldMapCorrectly() {
-        Service service = Service.builder()
+        SalonService service = SalonService.builder()
                 .id(1)
                 .name("name")
                 .price(100)
@@ -33,10 +33,10 @@ public class ServiceMapperTest {
                 .id(1)
                 .name("name")
                 .price(100)
-                .durationInTimeslots(1)
+                .durationMinutes(30)
                 .build();
 
-        TestCase.assertEquals(expectedService, serviceMapper.mapDomainToEntity(service));
+        assertEquals(expectedService, serviceMapper.mapDomainToEntity(service));
     }
 
     @Test
@@ -45,10 +45,10 @@ public class ServiceMapperTest {
                 .id(1)
                 .name("name")
                 .price(100)
-                .durationInTimeslots(1)
+                .durationMinutes(30)
                 .build();
 
-        Service expectedService = Service.builder()
+        SalonService expectedService = SalonService.builder()
                 .id(1)
                 .name("name")
                 .price(100)
@@ -60,7 +60,7 @@ public class ServiceMapperTest {
 
     @Test
     public void mapDomainToEntityShouldReturnNullOnNullParameter() {
-        TestCase.assertNull(serviceMapper.mapDomainToEntity(null));
+        assertNull(serviceMapper.mapDomainToEntity(null));
     }
 
     @Test

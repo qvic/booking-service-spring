@@ -7,7 +7,7 @@ import java.time.Duration;
 
 @Builder(toBuilder = true)
 @Value
-public class Service {
+public class SalonService {
 
     private final Integer id;
     private final String name;

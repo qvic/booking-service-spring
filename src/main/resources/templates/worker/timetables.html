@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.worker.timetable}">Timetable</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container my-5">
+    <h3 class="mb-5 text-center" th:text="#{label.worker.timetable}">Timetable</h3>
+
+    <form method="get" class="form-inline">
+        <div class="form-group">
+            <label for="from-date" class="mr-2" th:text="#{label.from}">From</label>
+            <input id="from-date" class="form-control mr-2" type="date" name="from-date">
+        </div>
+        <div class="form-group">
+            <label for="to-date" class="mr-2" th:text="#{label.to}">To</label>
+            <input id="to-date" class="form-control mr-2" type="date" name="to-date">
+        </div>
+        <input class="btn btn-primary" type="submit" th:value="#{label.go}">
+    </form>
+
+    <div class="list-group">
+        <th:block th:each="timetable : ${timetables}">
+            <p class="mt-3 mb-1" th:text="${#temporals.format(timetable.date, 'dd.MM.YYYY')}">
+                Date
+            </p>
+            <div class="list-group">
+                <div th:if="${timetable.rows.isEmpty()}" th:text="#{label.client.no_available_places}"
+                     class="list-group-item text-secondary">
+                    No available places
+                </div>
+                <div th:each="row : ${timetable.rows}"
+                     class="list-group-item list-group-item-action flex-column align-items-start">
+                    <h4 class="mb-1" th:text="${row.fromTime + ' - ' + row.fromTime.plus(row.duration)}">
+                        13:30 - 14:00
+                    </h4>
+                    <hr>
+                    <div class="mb-2" th:each="order : ${row.orders}">
+                        <h5><span th:text="#{label.order}">Order</span> #<span th:text="${order.id}">id</span></h5>
+                        <div class="mb-1">
+                            <h5 th:text="#{label.service}">Service</h5>
+                            <p><span th:text="${order.service.name}">Name</span> ($<span
+                                    th:text="${order.service.price}">123</span>)</p>
+                        </div>
+                        <div class="mb-1">
+                            <h5 th:text="#{label.worker}">Worker</h5>
+                            <p><span th:text="${order.worker.name}">Name</span> (<span
+                                    th:text="${order.worker.email}">Email</span>)</p>
+                        </div>
+                        <div class="mb-1">
+                            <h5 th:text="#{label.client}">Client</h5>
+                            <p><span th:text="${order.client.name}">Name</span> (<span
+                                    th:text="${order.client.email}">Email</span>)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>
+

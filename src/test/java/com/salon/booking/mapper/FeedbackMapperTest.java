@@ -1,15 +1,15 @@
 package com.salon.booking.mapper;
 
 import com.salon.booking.domain.Feedback;
-import com.salon.booking.domain.User;
-import com.salon.booking.entity.FeedbackStatusEntity;
+import com.salon.booking.domain.FeedbackStatus;
+import com.salon.booking.domain.Order;
 import com.salon.booking.entity.FeedbackEntity;
-import com.salon.booking.entity.UserEntity;
-import junit.framework.TestCase;
+import com.salon.booking.entity.FeedbackStatusEntity;
+import com.salon.booking.entity.OrderEntity;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -23,34 +23,46 @@ import static org.mockito.Mockito.when;
 public class FeedbackMapperTest {
 
     @Mock
-    private Mapper<UserEntity, User> userMapper;
+    private Mapper<OrderEntity, Order> orderMapper;
 
-    @InjectMocks
+    @Mock
+    private Mapper<FeedbackStatusEntity, FeedbackStatus> feedbackStatusMapper;
+
     private FeedbackMapper feedbackMapper;
+
+    @Before
+    public void injectMocks() {
+        feedbackMapper = new FeedbackMapper(orderMapper, feedbackStatusMapper);
+    }
 
     @After
     public void resetMocks() {
-        reset(userMapper);
+        reset(orderMapper);
     }
 
     @Test
     public void mapDomainToEntityShouldMapCorrectly() {
-        User user = User.builder()
+        Order order = Order.builder()
                 .id(1)
                 .build();
 
-        UserEntity userEntity = UserEntity.builder()
+        OrderEntity orderEntity = OrderEntity.builder()
                 .id(1)
                 .build();
 
-        when(userMapper.mapDomainToEntity(eq(user))).thenReturn(userEntity);
+        when(orderMapper.mapDomainToEntity(eq(order))).thenReturn(orderEntity);
 
-        Feedback feedback = new Feedback("text", user);
+        Feedback feedback = Feedback.builder()
+                .id(1)
+                .text("text")
+                .order(order)
+                .build();
 
         FeedbackEntity expectedFeedbackEntity = FeedbackEntity.builder()
+                .id(1)
                 .status(FeedbackStatusEntity.CREATED)
                 .text("text")
-                .worker(userEntity)
+                .order(orderEntity)
                 .build();
 
         assertEquals(expectedFeedbackEntity, feedbackMapper.mapDomainToEntity(feedback));
@@ -58,25 +70,32 @@ public class FeedbackMapperTest {
 
     @Test
     public void mapEntityToDomainShouldMapCorrectly() {
-        User user = User.builder()
+        Order order = Order.builder()
                 .id(1)
                 .build();
 
-        UserEntity userEntity = UserEntity.builder()
+        OrderEntity orderEntity = OrderEntity.builder()
                 .id(1)
                 .build();
 
-        when(userMapper.mapEntityToDomain(eq(userEntity))).thenReturn(user);
+        when(orderMapper.mapEntityToDomain(eq(orderEntity))).thenReturn(order);
+        when(feedbackStatusMapper.mapEntityToDomain(eq(FeedbackStatusEntity.APPROVED))).thenReturn(FeedbackStatus.APPROVED);
 
         FeedbackEntity feedbackEntity = FeedbackEntity.builder()
-                .status(FeedbackStatusEntity.CREATED)
+                .id(1)
+                .status(FeedbackStatusEntity.APPROVED)
                 .text("text")
-                .worker(userEntity)
+                .order(orderEntity)
                 .build();
 
-        Feedback expectedFeedback = new Feedback("text", user);
+        Feedback expectedFeedback = Feedback.builder()
+                .id(1)
+                .text("text")
+                .order(order)
+                .status(FeedbackStatus.APPROVED)
+                .build();
 
-        TestCase.assertEquals(expectedFeedback, feedbackMapper.mapEntityToDomain(feedbackEntity));
+        assertEquals(expectedFeedback, feedbackMapper.mapEntityToDomain(feedbackEntity));
     }
 
     @Test
@@ -86,6 +105,6 @@ public class FeedbackMapperTest {
 
     @Test
     public void mapEntityToDomainShouldReturnNullOnNullParameter() {
-        TestCase.assertNull(feedbackMapper.mapEntityToDomain(null));
+        assertNull(feedbackMapper.mapEntityToDomain(null));
     }
 }

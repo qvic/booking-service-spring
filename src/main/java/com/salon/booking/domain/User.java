@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -23,7 +23,7 @@ public class User implements UserDetails {
     private Integer id;
 
     @NotNull(message = "{validation.name.not_null}")
-    @Size(min = 1, max = 200, message = "{validation.name.length}")
+    @Length(min = 1, max = 200, message = "{validation.name.length}")
     private String name;
 
     @NotNull(message = "{validation.email.not_null}")
@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private String email;
 
     @NotNull(message = "{validation.password.not_null}")
-    @Size(min = 5, max = 200, message = "{validation.password.length}")
+    @Length(min = 5, max = 200, message = "{validation.password.length}")
     private String password;
 
     private Role role;

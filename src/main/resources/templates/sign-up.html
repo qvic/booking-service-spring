@@ -18,7 +18,7 @@
 
         <div>
             <label for="inputEmail" class="sr-only"></label>
-            <input name="email" type="text" id="inputEmail" class="form-control" placeholder="Your email" required autofocus
+            <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Your email" required autofocus
                    th:field="*{email}">
             <span class="badge badge-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
         </div>

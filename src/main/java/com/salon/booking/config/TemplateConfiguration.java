@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 @Configuration
-public class TemplateConfig {
+public class TemplateConfiguration {
 
     @Bean
     public SpringSecurityDialect springSecurityDialect() {

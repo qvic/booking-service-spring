@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +63,6 @@ public class OrderServiceImpl implements OrderService {
                 selectedTimeslotId, order.getService(), order.getWorker());
 
         assignOrderToTimeslots(freeTimeslots, savedOrder.getId());
-
     }
 
     @Override

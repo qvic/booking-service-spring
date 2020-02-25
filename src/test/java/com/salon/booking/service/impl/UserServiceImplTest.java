@@ -85,23 +85,6 @@ public class UserServiceImplTest {
         assertThat(Collections.singletonList(worker), is(workers.getContent()));
     }
 
-    @Test
-    public void findAllWorkersShouldReturnLastPageIfPageNumberIsTooBig() {
-        Pageable requestedProperties = PageRequest.of(2, 1);
-        Page<UserEntity> daoPage = new PageImpl<>(Collections.emptyList(), requestedProperties, 2);
-        Page<UserEntity> lastPage = new PageImpl<>(Collections.singletonList(USER_ENTITY), PageRequest.of(1, 1), 2);
-        Page<User> mappedLastPage = new PageImpl<>(Collections.singletonList(USER), PageRequest.of(1, 1), 2);
-
-        when(userMapper.mapEntityToDomain(eq(USER_ENTITY))).thenReturn(USER);
-        when(userRepository.findAll(eq(requestedProperties))).thenReturn(daoPage);
-        when(userRepository.findAll(eq(lastPage.getPageable()))).thenReturn(lastPage);
-
-        Page<User> page = userService.findAllClients(requestedProperties);
-
-        assertArrayEquals(page.getContent().toArray(), mappedLastPage.getContent().toArray());
-        assertEquals(page.getPageable(), mappedLastPage.getPageable());
-    }
-
     private static UserEntity initUserEntity() {
         return UserEntity.builder()
                 .name(NAME)

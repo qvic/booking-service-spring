@@ -76,6 +76,7 @@ public class OrderMapperTest {
         when(serviceMapper.mapDomainToEntity(eq(service))).thenReturn(serviceEntity);
 
         Order order = Order.builder()
+                .id(1)
                 .client(client)
                 .worker(worker)
                 .date(dateTime)
@@ -83,6 +84,7 @@ public class OrderMapperTest {
                 .build();
 
         OrderEntity orderEntity = OrderEntity.builder()
+                .id(1)
                 .client(clientEntity)
                 .worker(workerEntity)
                 .date(dateTime)
@@ -137,9 +139,10 @@ public class OrderMapperTest {
                 .worker(worker)
                 .date(dateTime)
                 .service(service)
+                .id(1)
                 .build();
 
-        TestCase.assertEquals(order, orderMapper.mapEntityToDomain(orderEntity));
+        assertEquals(order, orderMapper.mapEntityToDomain(orderEntity));
     }
 
     @Test

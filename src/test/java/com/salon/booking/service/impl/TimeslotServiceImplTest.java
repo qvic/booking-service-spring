@@ -81,7 +81,7 @@ public class TimeslotServiceImplTest {
     }
 
     @Test
-    public void findTimetablesForOrderWithShouldReturnCorrectListServiceIsUnavailable() {
+    public void findTimetablesForOrderWithShouldReturnCorrectListWhenServiceIsUnavailable() {
         when(timeslotRepository.findAllByDateBetweenOrderByDateAscFromTimeAsc(any(), any())).thenReturn(TIMESLOT_ENTITIES);
         when(serviceRepository.findById(anyInt())).thenAnswer(this::mapService);
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(UserEntity.builder().build()));
@@ -116,7 +116,7 @@ public class TimeslotServiceImplTest {
         assertThat(unpackedIds, equalTo(Collections.singletonList(123)));
     }
 
-    private Object mapTimeslot(InvocationOnMock invocation) {
+    private Timeslot mapTimeslot(InvocationOnMock invocation) {
         TimeslotEntity t = invocation.getArgument(0);
         return Timeslot.builder()
                 .id(t.getId())
@@ -152,6 +152,8 @@ public class TimeslotServiceImplTest {
 
     @Test
     public void findTimeslotsForServiceWithWorkerShouldReturnEmptyListWhenWorkerIsBusy() {
+        when(timeslotRepository.findById(anyInt()))
+                .thenReturn(Optional.of(TimeslotEntity.builder().date(LocalDate.of(2020, 2, 2)).build()));
         when(timeslotRepository.findAllByDateOrderByDateAscFromTimeAsc(any())).thenReturn(TIMESLOT_ENTITIES_BY_DAY);
         when(serviceRepository.findById(anyInt())).thenReturn(Optional.of(ServiceEntity.builder()
                 .durationMinutes(30)
@@ -175,6 +177,8 @@ public class TimeslotServiceImplTest {
 
     @Test
     public void findTimeslotsForServiceWithWorkerShouldReturnEmptyListWhenServiceIsUnavailable() {
+        when(timeslotRepository.findById(anyInt()))
+                .thenReturn(Optional.of(TimeslotEntity.builder().date(LocalDate.of(2020, 2, 2)).build()));
         when(timeslotRepository.findAllByDateOrderByDateAscFromTimeAsc(any())).thenReturn(TIMESLOT_ENTITIES_BY_DAY);
         when(serviceRepository.findById(anyInt())).thenReturn(Optional.of(ServiceEntity.builder()
                 .durationMinutes(30)
@@ -198,6 +202,8 @@ public class TimeslotServiceImplTest {
 
     @Test
     public void findTimeslotsForServiceWithWorkerShouldReturnCorrectListIfServiceAndWorkerAreAvailable() {
+        when(timeslotRepository.findById(anyInt()))
+                .thenReturn(Optional.of(TimeslotEntity.builder().date(LocalDate.of(2020, 2, 2)).build()));
         when(timeslotRepository.findAllByDateOrderByDateAscFromTimeAsc(any())).thenReturn(TIMESLOT_ENTITIES_BY_DAY);
         when(serviceRepository.findById(anyInt())).thenReturn(Optional.of(ServiceEntity.builder()
                 .durationMinutes(30)
@@ -235,6 +241,8 @@ public class TimeslotServiceImplTest {
 
     @Test
     public void findTimeslotsForServiceWithWorkerShouldReturnEmptyListIfServiceIntersectsOther() {
+        when(timeslotRepository.findById(anyInt()))
+                .thenReturn(Optional.of(TimeslotEntity.builder().date(LocalDate.of(2020, 2, 2)).build()));
         when(timeslotRepository.findAllByDateOrderByDateAscFromTimeAsc(any())).thenReturn(TIMESLOT_ENTITIES_BY_DAY);
         when(serviceRepository.findById(anyInt())).thenReturn(Optional.of(ServiceEntity.builder()
                 .durationMinutes(90)
@@ -271,6 +279,8 @@ public class TimeslotServiceImplTest {
 
     @Test
     public void findTimeslotsForServiceWithWorkerShouldReturnCorrectListIfServiceTakesSeveralTimeslots() {
+        when(timeslotRepository.findById(anyInt()))
+                .thenReturn(Optional.of(TimeslotEntity.builder().date(LocalDate.of(2020, 2, 2)).build()));
         when(timeslotRepository.findAllByDateOrderByDateAscFromTimeAsc(any())).thenReturn(TIMESLOT_ENTITIES_BY_DAY);
         when(serviceRepository.findById(anyInt())).thenReturn(Optional.of(ServiceEntity.builder()
                 .durationMinutes(50)
@@ -307,10 +317,14 @@ public class TimeslotServiceImplTest {
 
     @Test
     public void findTimeslotsForServiceWithWorkerShouldReturnEmptyListIfThereIsPauseBetweenTimeslots() {
-        when(timeslotRepository.findAllByDateOrderByDateAscFromTimeAsc(any())).thenReturn(TIMESLOT_ENTITIES_BY_DAY);
-        when(serviceRepository.findById(anyInt())).thenReturn(Optional.of(ServiceEntity.builder()
-                .durationMinutes(60)
-                .build()));
+        when(timeslotRepository.findById(anyInt()))
+                .thenReturn(Optional.of(TimeslotEntity.builder().date(LocalDate.of(2020, 2, 2)).build()));
+        when(timeslotRepository.findAllByDateOrderByDateAscFromTimeAsc(any()))
+                .thenReturn(TIMESLOT_ENTITIES_BY_DAY);
+        when(serviceRepository.findById(anyInt()))
+                .thenReturn(Optional.of(ServiceEntity.builder()
+                        .durationMinutes(60)
+                        .build()));
         when(orderRepository.findById(anyInt())).thenAnswer(
                 invocation -> Optional.of(ORDER_ENTITIES.get(invocation.getArgument(0))));
         when(timeslotMapper.mapEntityToDomain(any())).thenAnswer(
@@ -396,43 +410,6 @@ public class TimeslotServiceImplTest {
         );
     }
 
-    private static List<Order> initOrders() {
-        return Arrays.asList(
-                Order.builder()
-                        .service(SalonService.builder()
-                                .id(1)
-                                .build())
-                        .worker(User.builder()
-                                .id(1)
-                                .build())
-                        .build(),
-                Order.builder()
-                        .service(SalonService.builder()
-                                .id(1)
-                                .build())
-                        .worker(User.builder()
-                                .id(2)
-                                .build())
-                        .build(),
-                Order.builder()
-                        .service(SalonService.builder()
-                                .id(1)
-                                .build())
-                        .worker(User.builder()
-                                .id(1)
-                                .build())
-                        .build(),
-                Order.builder()
-                        .service(SalonService.builder()
-                                .id(3)
-                                .build())
-                        .worker(User.builder()
-                                .id(2)
-                                .build())
-                        .build()
-        );
-    }
-
     private static List<TimeslotEntity> initTimeslotEntitiesByDay() {
         DurationEntity duration = new DurationEntity(1, 30);
 
@@ -476,6 +453,7 @@ public class TimeslotServiceImplTest {
                         .date(LocalDate.of(2020, 2, 2))
                         .fromTime(LocalTime.of(10, 30))
                         .duration(duration)
+                        .orders(Collections.emptyList())
                         .build()
         );
     }
@@ -496,6 +474,7 @@ public class TimeslotServiceImplTest {
                         .date(LocalDate.of(2020, 2, 5))
                         .fromTime(LocalTime.of(8, 30))
                         .duration(duration)
+                        .orders(Collections.emptyList())
                         .build(),
                 TimeslotEntity.builder()
                         .id(124)
@@ -519,7 +498,7 @@ public class TimeslotServiceImplTest {
     }
 
     private static List<Timetable> initTimetables() {
-        Order order = Order.builder().build();
+        Order order = Order.builder().id(0).build();
         Duration duration = Duration.ofMinutes(30);
 
         return Arrays.asList(
@@ -536,6 +515,7 @@ public class TimeslotServiceImplTest {
                                         .id(123)
                                         .duration(duration)
                                         .date(LocalDate.of(2020, 2, 5))
+                                        .orders(Collections.emptyList())
                                         .build())
                 ),
                 new Timetable(LocalDate.of(2020, 2, 6), Collections.emptyList()),

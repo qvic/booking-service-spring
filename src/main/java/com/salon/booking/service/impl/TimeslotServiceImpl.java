@@ -156,10 +156,9 @@ public class TimeslotServiceImpl implements TimeslotService {
                 .map(this::buildOrderEntity)
                 .collect(Collectors.toList());
 
-        return timeslotMapper.mapEntityToDomain(
-                timeslotEntity.toBuilder()
-                        .orders(orders)
-                        .build());
+        return timeslotMapper.mapEntityToDomain(timeslotEntity.toBuilder()
+                .orders(orders)
+                .build());
     }
 
     private OrderEntity buildOrderEntity(OrderEntity orderEntity) {
